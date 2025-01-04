@@ -42,24 +42,6 @@ function addGamesToPage(games) {
         gamesContainer.appendChild(newDiv)
         
     })
-
-    // loop over each item in the data
-
-
-        // create a new div element, which will become the game card
-
-
-        // add the class game-card to the list
-
-
-        // set the inner HTML using a template literal to display some info 
-        // about each game
-        // TIP: if your images are not displaying, make sure there is space
-        // between the end of the src attribute and the end of the tag ("/>")
-
-
-        // append the game to the games-container
-
 }
 
 // call the function we just defined using the correct variable
@@ -88,7 +70,7 @@ raisedCard.innerText = `$${totalRaised.toLocaleString()}`
 
 // grab number of games card and set its inner HTML
 const gamesCard = document.getElementById("num-games");
-
+gamesCard.innerText = GAMES_JSON.length
 
 /*************************************************************************************
  * Challenge 5: Add functions to filter the funded and unfunded games
@@ -149,12 +131,28 @@ allBtn.addEventListener("click", showAllGames);
 const descriptionContainer = document.getElementById("description-container");
 
 // use filter or reduce to count the number of unfunded games
+const amtFunded = GAMES_JSON.filter(data => data["pledged"] >= data["goal"]).length
+const notFunded = GAMES_JSON.filter(data => data["pledged"] < data["goal"]).length
+const raiseAMT = `$${totalRaised.toLocaleString()}`//recycle earlier compute
 
+const gameText = (num) => num === 1 ? "game" : "games";
+const fundedText = gameText(amtFunded);
+const unfundedText = gameText(notFunded);
 
 // create a string that explains the number of unfunded games using the ternary operator
+let message = `A total of ${raiseAMT} has been raised for ${amtFunded} ${fundedText}. `;
+message += `Currently, ${notFunded} ${unfundedText} remain unfunded. `;
 
+if (notFunded === 0) {
+    message += "We have achieved our goals!";
+} else {
+    message += "We need your help to fund these amazing games!";
+}
 
 // create a new DOM element containing the template string and append it to the description container
+let p = document.createElement('p')
+p.innerText = message
+descriptionContainer.appendChild(p)
 
 /************************************************************************************
  * Challenge 7: Select & display the top 2 games
